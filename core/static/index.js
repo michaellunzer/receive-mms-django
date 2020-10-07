@@ -1,4 +1,4 @@
-var POLL_INTERVAL = 3000;
+var POLL_INTERVAL = 10000;
 
 function ReceiveMMSController(){
   function showEnvVarUnsetWarning() {
@@ -19,10 +19,12 @@ function ReceiveMMSController(){
       })
   }
 
+
+
   function showImages() {
     $.get('/images').then(function(images) {
-      $('.image-container').html(images.data.map(function(media_url) {
-        return '<img width="100%" class="col-md-4" src="' + media_url + '"/>';
+      $('.image-container').html(images.data.map(function(message) {
+        return '<div class="row"><div class="col-md-4"><img width="100%" src="' + message.media_url + '"/><div>' + message.content + '</div></div>';       
       }).join(''));
     });
   }

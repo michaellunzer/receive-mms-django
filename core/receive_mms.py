@@ -13,14 +13,14 @@ except ImportError:
     from urlparse import urlparse
 
 
-def reply_with_twiml_message(message_sid, from_number, num_media, media_files):
+def reply_with_twiml_message(message_sid, from_number, num_media, media_files, body):
     if not from_number or not message_sid:
         raise Exception('Please provide a From Number and a Message Sid')
 
     for (media_url, mime_type) in media_files:
         file_extension = mimetypes.guess_extension(mime_type)
         media_sid = os.path.basename(urlparse(media_url).path)
-        content = requests.get(media_url).text
+        # content = requests.get(media_url).text
         filename = '{sid}{ext}'.format(sid=media_sid, ext=file_extension)
 
         mms_media = MMSMedia(
@@ -29,11 +29,11 @@ def reply_with_twiml_message(message_sid, from_number, num_media, media_files):
             media_sid=media_sid,
             message_sid=message_sid,
             media_url=media_url,
-            content=content)
+            content=body)
         mms_media.save()
 
     response = MessagingResponse()
-    message = 'Send us an image!' if not num_media else 'Thanks for the {} images.'.format(num_media)
+    message = 'Send us an image!' if not num_media else 'Thanks for the {} message and wishing Michael a happy birthday!'.format(num_media)
     response.message(body=message, to=from_number, from_=os.getenv('TWILIO_NUMBER'))
     return response
 
@@ -49,7 +49,7 @@ def delete_media_file(filename=None):
 
 
 def fetch_all_media():
-    return list(map(lambda mms: mms.media_url, MMSMedia.objects.all()))
+    return list(map(lambda mms: {"media_url":mms.media_url, "content":mms.content}, MMSMedia.objects.all()))
 
 
 def _twilio_client():

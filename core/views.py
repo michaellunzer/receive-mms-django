@@ -47,10 +47,13 @@ def handle_incoming_message(request):
     message_sid = request.POST.get('MessageSid', '')
     from_number = request.POST.get('From', '')
     num_media = int(request.POST.get('NumMedia', 0))
+    body = request.POST.get('Body', '')
+
+    print("the body is", body)
 
     media_files = [(request.POST.get("MediaUrl{}".format(i), ''),
                     request.POST.get("MediaContentType{}".format(i), ''))
                    for i in range(0, num_media)]
 
-    response = reply_with_twiml_message(message_sid, from_number, num_media, media_files)
+    response = reply_with_twiml_message(message_sid, from_number, num_media, media_files, body)
     return HttpResponse(response, content_type='application/xml')
