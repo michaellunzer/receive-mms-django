@@ -1,0 +1,1 @@
+web: gunicorn receive_mms.wsgi
