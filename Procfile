@@ -1,1 +1,1 @@
-web: gunicorn receive_mms.wsgi
+web: python manage.py collectstatic --no-input; gunicorn receive_mms.wsgi --log-file - --log-level debug
