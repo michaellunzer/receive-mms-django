@@ -27,7 +27,7 @@ To run the app locally:
 1. Clone this repository and `cd` into it
 
    ```bash
-   git clone git@github.com:TwilioDevEd/receive-mms-django.git
+   git clone git@github.com:michaellunzer/receive-mms-django.git
    cd receive-mms-django
    ```
 
